@@ -1,4 +1,4 @@
-package testRailApi
+package com.github.djuise.testrail
 
 const val TESTRAIL_URL = "https://your-testrail-instance.com"
 const val USERNAME = "your-email@example.com"

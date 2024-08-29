@@ -1,4 +1,4 @@
-package testRailApi.api
+package com.github.djuise.testrail
 
 import okhttp3.Credentials
 

@@ -1,4 +1,4 @@
-//package testRailApi.api
+//package com.github.djuise.testrail.api
 //
 //import okhttp3.OkHttpClient
 //

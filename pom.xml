@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.djuise</groupId>
   <artifactId>testrail-api-helper</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <packaging>jar</packaging>
 
   <name>TestRailApiHelper</name>
@@ -19,6 +20,7 @@
 
   <build>
     <plugins>
+      <!-- Kotlin Plugin -->
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -43,21 +45,39 @@
           <jvmTarget>1.8</jvmTarget>
         </configuration>
       </plugin>
+      <!-- Maven JAR Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.3.0</version>
         <configuration>
           <archive>
-<!--             No Main-Class needed for libraries -->
-<!--            If you want to use it as executable jar file uncomment it -->
-<!--              <manifestEntries>-->
-<!--                <Main-Class>com.github.djuise.testrail.App</Main-Class>-->
-<!--              </manifestEntries>-->
+            <manifestEntries>
+              <!-- No Main-Class needed for libraries -->
+              <!-- If you want to use it as executable jar file uncomment it -->
+              <!-- <Main-Class>com.github.djuise.testrail.App</Main-Class> -->
+            </manifestEntries>
           </archive>
         </configuration>
       </plugin>
     </plugins>
+    <!-- Explicitly specify source directories for Kotlin -->
+    <resources>
+      <resource>
+        <directory>src/main/kotlin</directory>
+        <includes>
+          <include>**/*.kt</include>
+        </includes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/kotlin</directory>
+        <includes>
+          <include>**/*.kt</include>
+        </includes>
+      </testResource>
+    </testResources>
   </build>
 
   <dependencies>
@@ -77,4 +97,5 @@
       <version>${kotlin.version}</version>
     </dependency>
   </dependencies>
+
 </project>
