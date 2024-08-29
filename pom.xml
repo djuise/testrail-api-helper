@@ -4,11 +4,11 @@
 
   <groupId>com.github.Djuise</groupId>
   <artifactId>testrail-api-helper</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <packaging>pom</packaging>
 
   <name>TestRailApiHelper</name>
-  <url>https://github.com/Djuise/test-rail-api-hendler</url>
+  <url>https://github.com/Djuise/test-rail-api-helper</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
