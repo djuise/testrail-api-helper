@@ -4,8 +4,8 @@
 
   <groupId>com.github.Djuise</groupId>
   <artifactId>testrail-api-helper</artifactId>
-  <version>1.0.3</version>
-  <packaging>pom</packaging>
+  <version>1.0.4</version>
+  <packaging>jar</packaging>
 
   <name>TestRailApiHelper</name>
   <url>https://github.com/Djuise/test-rail-api-helper</url>
