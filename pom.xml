@@ -5,7 +5,7 @@
   <groupId>com.github.Djuise</groupId>
   <artifactId>testrail-api-helper</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <name>TestRailApiHelper</name>
   <url>https://github.com/Djuise/test-rail-api-hendler</url>
