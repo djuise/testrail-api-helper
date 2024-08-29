@@ -1,34 +1,37 @@
-//package com.github.djuise.testrail.api
-//
-//import okhttp3.OkHttpClient
-//
-//object TestRailHelper {
-//
-//    // Base URL and credentials for TestRail API
-//
-//
-//    // OkHttp client and Jackson ObjectMapper
-//    val client = OkHttpClient()
-//    val objectMapper = jacksonObjectMapper()
-//
-//    // Function to send a GET request to TestRail
-//
-//
-//    // Data classes for mapping JSON responses
-//    data class Project(val id: Int, val name: String)
-//    data class Test(val id: Int, val title: String, val customAutomationStatus: String, val customSmoke: String)
-//    data class Run(val name: String, val case_ids: List<Int>)
-//
+package com.github.djuise.testrail.api
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import okhttp3.OkHttpClient
+
+object TestRailHelper {
+
+    // Base URL and credentials for TestRail API
+
+
+    // OkHttp client and Jackson ObjectMapper
+    val objectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
+
+
+    // Function to send a GET request to TestRail
+
+
+    // Data classes for mapping JSON responses
+    data class Project(val id: Int, val name: String)
+    data class Test(val id: Int, val title: String, val customAutomationStatus: String, val customSmoke: String)
+    data class Run(val name: String, val case_ids: List<Int>)
+
 //    fun main() {
 //        // Step 1: Get all projects
-//        val projectsResponse = get("index.php?/api/v2/get_projects")
-//        val projects: List<Project> = objectMapper.readValue(projectsResponse.body?.string() ?: "")
+//        val projectsResponse = TestRailRequest.get("index.php?/api/v2/get_projects")
+//        val projectsJson = projectsResponse.body?.string() ?: ""
+//        val projects: List<Project> = objectMapper.readValue(projectsJson, DataTestClass::class)
 //
 //        // Choose a project (e.g., the first one)
 //        val project = projects.firstOrNull() ?: throw Exception("No projects found")
 //
 //        // Step 2: Get all tests in the project with Automation status = automated and smoke = checked
-//        val testsResponse = get("index.php?/api/v2/get_tests/${project.id}")
+//        val testsResponse = Request.get("index.php?/api/v2/get_tests/${project.id}")
 //        val tests: List<Test> = objectMapper.readValue(testsResponse.body?.string() ?: "")
 //
 //        // Filter tests by the required custom fields
@@ -55,6 +58,6 @@
 //            println("Failed to create Test Run: ${createRunResponse.message}")
 //        }
 //    }
-//
-//
-//}
+
+
+}

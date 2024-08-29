@@ -5,7 +5,7 @@
 
   <groupId>com.github.djuise</groupId>
   <artifactId>testrail-api-helper</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
   <packaging>jar</packaging>
 
   <name>TestRailApiHelper</name>
@@ -19,6 +19,9 @@
   </properties>
 
   <build>
+    <sourceDirectory>src/main/kotlin</sourceDirectory>
+<!--    <testSourceDirectory>src/test/kotlin</testSourceDirectory>-->
+
     <plugins>
       <!-- Kotlin Plugin -->
       <plugin>
@@ -50,34 +53,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.3.0</version>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <!-- No Main-Class needed for libraries -->
-              <!-- If you want to use it as executable jar file uncomment it -->
-              <!-- <Main-Class>com.github.djuise.testrail.App</Main-Class> -->
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
     </plugins>
-    <!-- Explicitly specify source directories for Kotlin -->
-    <resources>
-      <resource>
-        <directory>src/main/kotlin</directory>
-        <includes>
-          <include>**/*.kt</include>
-        </includes>
-      </resource>
-    </resources>
-    <testResources>
-      <testResource>
-        <directory>src/test/kotlin</directory>
-        <includes>
-          <include>**/*.kt</include>
-        </includes>
-      </testResource>
-    </testResources>
   </build>
 
   <dependencies>
@@ -96,6 +73,10 @@
       <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+      <version>2.17.2</version>
+    </dependency>
   </dependencies>
-
 </project>
