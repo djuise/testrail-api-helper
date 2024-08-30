@@ -18,30 +18,31 @@ import java.util.*
  * It supports authentication via username and password or API token, and offers methods to manage projects, test suites, and test cases.
  */
 
-object TestRail: TCredential, TPassword, TestRailFunctions {
+class TestRail private constructor(): TCredential, TPassword, TestRailFunctions {
 
-    /** The base URL of the TestRail server. */
-    lateinit var url: String
+    companion object {
+        /** The base URL of the TestRail server. */
+        lateinit var baseUrl: String
 
-    /** The authentication token used for API requests. Generated automatically depends on provided credentials. */
-    lateinit var token: String
+        /** The authentication token used for API requests. Generated automatically depends on provided credentials. */
+        lateinit var token: String
+
+        /**
+         * Configures the base URL for the TestRail API.
+         *
+         * @param url The base URL of the TestRail server.
+         * @return Returns an instance of TCredential for chaining configuration.
+         */
+        fun url(url: String): TCredential {
+            baseUrl = url
+            return TestRail()
+        }
+    }
 
     // These fields are used internally for authentication purposes
     private lateinit var username: String // ?
     private lateinit var password: String // ?
     private lateinit var apiToken: String // ?
-
-    /**
-     * Configures the base URL for the TestRail API.
-     *
-     * @param url The base URL of the TestRail server.
-     * @return Returns an instance of TCredential for chaining configuration.
-     */
-    fun url(url: String): TCredential {
-        this.url = url
-
-        return this
-    }
 
     /**
      * Sets the username for API authentication.
@@ -63,7 +64,7 @@ object TestRail: TCredential, TPassword, TestRailFunctions {
      */
     override fun password(password: String): TestRailFunctions {
         this.password = password
-        this.token = Base64.getEncoder().encodeToString("$username:$password".toByteArray())
+        token = Base64.getEncoder().encodeToString("$username:$password".toByteArray())
 
         return this
     }
@@ -71,12 +72,12 @@ object TestRail: TCredential, TPassword, TestRailFunctions {
     /**
      * Sets the API token for authentication and encodes it.
      *
-     * @param token The API token provided by TestRail.
+     * @param apiToken The API token provided by TestRail.
      * @return Returns an instance of TestRailFunctions allowing access to API functions.
      */
-    override fun apiToken(token: String): TestRailFunctions {
-        this.apiToken = token
-        this.token = Base64.getEncoder().encodeToString("$username:$apiToken".toByteArray())
+    override fun apiToken(apiToken: String): TestRailFunctions {
+        this.apiToken = apiToken
+        token = Base64.getEncoder().encodeToString("$username:$apiToken".toByteArray())
 
         return this
     }

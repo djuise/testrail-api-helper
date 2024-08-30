@@ -18,7 +18,7 @@ object TestRailRequest {
 
     fun get(baseUrl: String): Response {
         val request = requestBuilder
-            .url("${TestRail.url}/$baseUrl")
+            .url("${TestRail.baseUrl}/$baseUrl")
             .build()
 
         return client.newCall(request).execute()
@@ -35,7 +35,7 @@ object TestRailRequest {
         val body: RequestBody = jsonBody.toRequestBody(mediaType)
 
         val request = requestBuilder
-            .url("${TestRail.url}/$baseUrl")
+            .url("${TestRail.baseUrl}/$baseUrl")
             .post(body)
             .build()
 

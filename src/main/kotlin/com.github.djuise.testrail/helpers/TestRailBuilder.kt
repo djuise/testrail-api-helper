@@ -11,7 +11,7 @@ interface TCredential {
 
 interface TPassword {
     fun password(password: String): TestRailFunctions
-    fun apiToken(token: String): TestRailFunctions
+    fun apiToken(apiToken: String): TestRailFunctions
 }
 
 interface TestRailFunctions {
