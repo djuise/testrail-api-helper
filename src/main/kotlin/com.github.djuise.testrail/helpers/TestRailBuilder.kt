@@ -1,8 +1,9 @@
 package com.github.djuise.testrail.helpers
 
-import com.github.djuise.testrail.api.dto.CasesDTO
-import com.github.djuise.testrail.api.dto.ProjectsDTO
-import com.github.djuise.testrail.api.dto.Suite
+import com.github.djuise.testrail.api.dto.CaseDTO
+import com.github.djuise.testrail.api.dto.ProjectDTO
+import com.github.djuise.testrail.api.dto.SectionDTO
+import com.github.djuise.testrail.api.dto.SuiteDTO
 import com.github.djuise.testrail.api.helpers.ProjectId
 
 interface TCredential {
@@ -15,10 +16,13 @@ interface TPassword {
 }
 
 interface TestRailFunctions {
-    fun getProjects(): ProjectsDTO
-    fun getSuites(projectId: Int): List<Suite>
+    fun getProjects(): List<ProjectDTO>
+    fun getSuites(projectId: Int): List<SuiteDTO>
     fun getFirstFoundSuiteIdByName(name: String, projectId: Int): Int?
     fun getFirstFoundProjectIdByName(name: String): Int?
-    fun getCases(projectId: Int, suiteId: Int): CasesDTO
+    fun getCases(projectId: Int, suiteId: Int): List<CaseDTO>
     fun createRun(name: String): ProjectId
+    fun getSections(projectId: Int, suiteId: Int): List<SectionDTO>
+    fun getChildrenIdsForSections(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<Int>
+    fun getChildrenIdsForSection(projectId: Int, suiteId: Int, sectionsId: Int): List<Int>
 }

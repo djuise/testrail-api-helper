@@ -6,10 +6,10 @@ import com.github.djuise.testrail.api.dto.CasesDTO
 
 object Cases {
 
-    fun getAll(projectId: Int, suiteId: Int): CasesDTO {
+    fun getAll(projectId: Int, suiteId: Int): List<CaseDTO> {
 
-        fun getCases(projectId: Int, suiteId: Int, offset: Int, limit: Int): CasesDTO {
-            return TestRailRequest.get("get_cases/$projectId&suite_id=$suiteId&limit=$limit&offset=$offset", CasesDTO::class.java)
+        fun getCases(projectId: Int, suiteId: Int, offset: Int, limit: Int): List<CaseDTO> {
+            return TestRailRequest.get("get_cases/$projectId&suite_id=$suiteId&limit=$limit&offset=$offset", CasesDTO::class.java).cases
         }
 
         val allCases = mutableListOf<CaseDTO>()
@@ -18,16 +18,16 @@ object Cases {
         var hasMoreCases = true
 
         while (hasMoreCases) {
-            val casesResponse = getCases(projectId, suiteId, offset, limit)
-            allCases.addAll(casesResponse.cases)
+            val cases = getCases(projectId, suiteId, offset, limit)
+            allCases.addAll(cases)
 
-            if (casesResponse.cases.size < limit) {
+            if (cases.size < limit) {
                 hasMoreCases = false
             } else {
                 offset += limit
             }
         }
 
-        return CasesDTO(allCases)
+        return allCases
     }
 }

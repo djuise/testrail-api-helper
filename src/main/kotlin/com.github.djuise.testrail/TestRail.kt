@@ -1,12 +1,14 @@
 package com.github.djuise.testrail
 
-import com.github.djuise.testrail.api.dto.CasesDTO
-import com.github.djuise.testrail.api.dto.ProjectsDTO
-import com.github.djuise.testrail.api.dto.Suite
+import com.github.djuise.testrail.api.dto.CaseDTO
+import com.github.djuise.testrail.api.dto.ProjectDTO
+import com.github.djuise.testrail.api.dto.SectionDTO
+import com.github.djuise.testrail.api.dto.SuiteDTO
 import com.github.djuise.testrail.api.helpers.ProjectId
 import com.github.djuise.testrail.api.helpers.TestRailRunBuilder
 import com.github.djuise.testrail.api.requests.Cases
 import com.github.djuise.testrail.api.requests.Projects
+import com.github.djuise.testrail.api.requests.Sections
 import com.github.djuise.testrail.api.requests.Suites
 import com.github.djuise.testrail.helpers.TCredential
 import com.github.djuise.testrail.helpers.TPassword
@@ -85,9 +87,9 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
     /**
      * Retrieves a list of all projects from TestRail.
      *
-     * @return Returns a ProjectsDTO containing a list of projects.
+     * @return Returns a List<ProjectDTO>
      */
-    override fun getProjects(): ProjectsDTO {
+    override fun getProjects(): List<ProjectDTO> {
         return Projects.get()
     }
 
@@ -98,7 +100,7 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
      * @return Returns the ID of the first found project or null if no match is found.
      */
     override fun getFirstFoundProjectIdByName(name: String): Int? {
-        return getProjects().projects.firstOrNull { it.name.lowercase() == name.lowercase() }?.id
+        return getProjects().firstOrNull { it.name.lowercase() == name.lowercase() }?.id
     }
 
     /**
@@ -107,7 +109,7 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
      * @param projectId The ID of the project.
      * @return Returns a list of Suite objects.
      */
-    override fun getSuites(projectId: Int): List<Suite> {
+    override fun getSuites(projectId: Int): List<SuiteDTO> {
         return Suites.get(projectId)
     }
 
@@ -127,9 +129,9 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
      *
      * @param projectId The project ID.
      * @param suiteId The suite ID within the project.
-     * @return Returns a CasesDTO containing a list of test cases.
+     * @return Returns a List<CaseDTO>
      */
-    override fun getCases(projectId: Int, suiteId: Int): CasesDTO {
+    override fun getCases(projectId: Int, suiteId: Int): List<CaseDTO> {
         return Cases.getAll(projectId, suiteId)
     }
 
@@ -141,5 +143,17 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
      */
     override fun createRun(name: String): ProjectId {
         return TestRailRunBuilder.name(name)
+    }
+
+    override fun getSections(projectId: Int, suiteId: Int): List<SectionDTO> {
+        return Sections.getAll(projectId, suiteId)
+    }
+
+    override fun getChildrenIdsForSections(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<Int> {
+        return Sections.getChildrenForSections(projectId, suiteId, sectionsId)
+    }
+
+    override fun getChildrenIdsForSection(projectId: Int, suiteId: Int, sectionsId: Int): List<Int> {
+        return Sections.getChildrenForSections(projectId, suiteId, listOf(sectionsId))
     }
 }

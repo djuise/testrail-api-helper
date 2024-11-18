@@ -5,13 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.github.djuise.testrail.api.helpers.UnixTimestampDeserializer
 import java.util.*
 
-data class CasesDTO(var cases: List<CaseDTO>) {
-
-    fun filter(conditions: (CaseDTO) -> Boolean): List<CaseDTO> {
-        return cases.filter(conditions)
-    }
-}
-
+data class CasesDTO(var cases: List<CaseDTO>)
 
 data class CaseDTO(
     val id: Int,

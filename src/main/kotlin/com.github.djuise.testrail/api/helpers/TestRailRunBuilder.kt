@@ -1,7 +1,6 @@
 package com.github.djuise.testrail.api.helpers
 
 import com.github.djuise.testrail.api.dto.CaseDTO
-import com.github.djuise.testrail.api.dto.CasesDTO
 import com.github.djuise.testrail.api.dto.RunDTO
 import com.github.djuise.testrail.api.requests.Run
 
@@ -72,8 +71,6 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
      * Sets the case IDs directly for the test run.
      * Optional function. If it will be skipped then all testcases from the suite will be added.
      *
-     * Also, cases(casesList: List<CaseDTO>) or cases(cases: CasesDTO) can be used instead
-     *
      * @param casesId The list of case IDs to include in the test run.
      * @return Returns this `Run` instance to allow method chaining.
      */
@@ -88,29 +85,11 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
      * Sets the case IDs for the test run based on a list of `CaseDTO`.
      * Optional function. If it will be skipped then all testcases from the suite will be added.
      *
-     * Also, cases(casesId: List<Int>) or cases(cases: CasesDTO) can be used instead
-     *
      * @param casesList The list of `CaseDTO` from which to extract the IDs.
      * @return Returns this `Run` instance to allow method chaining.
      */
-    @JvmName("casesByList")
     fun cases(casesList: List<CaseDTO>): TestRailRunBuilder {
         this.casesId = casesList.map { it.id }
-
-        return this
-    }
-
-    /**
-     * Sets the case IDs for the test run based on a `CasesDTO`.
-     * Optional function. If it will be skipped then all testcases from the suite will be added.
-     *
-     * Also, cases(casesId: List<Int>) or cases(casesList: List<CaseDTO>) can be used instead
-     *
-     * @param cases The `CasesDTO` containing the cases from which to extract the IDs.
-     * @return Returns this `Run` instance to allow method chaining.
-     */
-    fun cases(cases: CasesDTO): TestRailRunBuilder {
-        this.casesId = cases.cases.map { it.id }
 
         return this
     }
