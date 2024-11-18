@@ -34,13 +34,13 @@ object Sections {
     fun getChildrenForSections(projectId: Int, suiteId: Int, parentIds: List<Int>): List<Int> {
         val allSections = getAll(projectId, suiteId)
         val result = mutableSetOf<Int>()
-        val stack = ArrayDeque(parentIds) // Стек для обработки секций
+        val stack = ArrayDeque(parentIds)
 
         while (stack.isNotEmpty()) {
-            val currentId = stack.removeLast() // Берем следующий ID из стека
-            if (result.add(currentId)) { // Если секция еще не обработана
+            val currentId = stack.removeLast()
+            if (result.add(currentId)) {
                 val children = allSections.filter { it.parentId == currentId }.map { it.id }
-                stack.addAll(children) // Добавляем дочерние секции в стек
+                stack.addAll(children)
             }
         }
 
