@@ -42,9 +42,9 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
     }
 
     // These fields are used internally for authentication purposes
-    private lateinit var username: String // ?
-    private lateinit var password: String // ?
-    private lateinit var apiToken: String // ?
+    private lateinit var username: String
+    private lateinit var password: String
+    private lateinit var apiToken: String
 
     /**
      * Sets the username for API authentication.
@@ -149,11 +149,11 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
         return Sections.getAll(projectId, suiteId)
     }
 
-    override fun getChildrenIdsForSections(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<Int> {
-        return Sections.getChildrenForSections(projectId, suiteId, sectionsId)
+    override fun getSectionsWithChilds(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO> {
+        return Sections.getSectionsWithChildren(projectId, suiteId, sectionsId)
     }
 
-    override fun getChildrenIdsForSection(projectId: Int, suiteId: Int, sectionsId: Int): List<Int> {
-        return Sections.getChildrenForSections(projectId, suiteId, listOf(sectionsId))
+    override fun getSectionWithChilds(projectId: Int, suiteId: Int, sectionsId: Int): List<SectionDTO> {
+        return Sections.getSectionsWithChildren(projectId, suiteId, listOf(sectionsId))
     }
 }

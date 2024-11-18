@@ -23,6 +23,6 @@ interface TestRailFunctions {
     fun getCases(projectId: Int, suiteId: Int): List<CaseDTO>
     fun createRun(name: String): ProjectId
     fun getSections(projectId: Int, suiteId: Int): List<SectionDTO>
-    fun getChildrenIdsForSections(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<Int>
-    fun getChildrenIdsForSection(projectId: Int, suiteId: Int, sectionsId: Int): List<Int>
+    fun getSectionsWithChilds(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO>
+    fun getSectionWithChilds(projectId: Int, suiteId: Int, sectionsId: Int): List<SectionDTO>
 }

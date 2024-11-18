@@ -31,15 +31,15 @@ object Sections {
         return allSections
     }
 
-    fun getChildrenForSections(projectId: Int, suiteId: Int, parentIds: List<Int>): List<Int> {
+    fun getSectionsWithChildren(projectId: Int, suiteId: Int, parentIds: List<Int>): List<SectionDTO> {
         val allSections = getAll(projectId, suiteId)
-        val result = mutableSetOf<Int>()
-        val stack = ArrayDeque(parentIds)
+        val result = mutableSetOf<SectionDTO>()
+        val stack = ArrayDeque(allSections.filter { it.id in parentIds })
 
         while (stack.isNotEmpty()) {
-            val currentId = stack.removeLast()
-            if (result.add(currentId)) {
-                val children = allSections.filter { it.parentId == currentId }.map { it.id }
+            val currentSection = stack.removeLast()
+            if (result.add(currentSection)) {
+                val children = allSections.filter { it.parentId == currentSection.id }
                 stack.addAll(children)
             }
         }
