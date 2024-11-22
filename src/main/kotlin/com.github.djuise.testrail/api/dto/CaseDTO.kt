@@ -2,10 +2,14 @@ package com.github.djuise.testrail.api.dto
 
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.djuise.testrail.api.helpers.UnixTimestampDeserializer
+import com.github.djuise.testrail.api.helpers.camelToSnake
+import com.github.djuise.testrail.api.helpers.objectMapper
 import java.util.*
 
 data class CasesDTO(var cases: List<CaseDTO>)
+data class UpdatedCasesDTO(var updatedCases: List<CaseDTO>)
 
 data class CaseDTO(
     val id: Int,
@@ -32,5 +36,17 @@ data class CaseDTO(
     @JsonAnySetter
     fun setDynamicField(key: String, value: Any?) {
         otherFields[key] = value
+    }
+
+    fun toStringJson(): String {
+        val testCaseMap = objectMapper.convertValue<Map<String, Any?>>(this)
+
+        val resultMap = testCaseMap.toMutableMap()
+        val otherFields = resultMap.remove("otherFields") as? Map<String, Any?>
+        if (otherFields != null) {
+            resultMap.putAll(otherFields)
+        }
+
+        return objectMapper.writeValueAsString(resultMap).camelToSnake()
     }
 }

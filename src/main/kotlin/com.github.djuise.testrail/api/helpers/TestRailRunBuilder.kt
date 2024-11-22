@@ -1,7 +1,7 @@
 package com.github.djuise.testrail.api.helpers
 
 import com.github.djuise.testrail.api.dto.CaseDTO
-import com.github.djuise.testrail.api.dto.RunDTO
+import com.github.djuise.testrail.api.dto.CreateRunDTO
 import com.github.djuise.testrail.api.requests.Run
 
 /**
@@ -101,7 +101,7 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
      * @throws TestRailException if the request to create the test run fails.
      */
     fun create(): Int {
-        val run = RunDTO(name, suiteId, description, casesId)
+        val run = CreateRunDTO(name, suiteId, description, casesId)
 
         return Run.create(projectId, run)
     }

@@ -3,6 +3,10 @@ package com.github.djuise.testrail.api.requests
 import com.github.djuise.testrail.api.TestRailRequest
 import com.github.djuise.testrail.api.dto.CaseDTO
 import com.github.djuise.testrail.api.dto.CasesDTO
+import com.github.djuise.testrail.api.dto.UpdatedCasesDTO
+import com.github.djuise.testrail.api.helpers.Constants.API2
+import com.github.djuise.testrail.api.helpers.mapToJsonWithSnakeCase
+import com.github.djuise.testrail.api.helpers.objectMapper
 
 object Cases {
 
@@ -29,5 +33,31 @@ object Cases {
         }
 
         return allCases
+    }
+
+    fun update(case: CaseDTO): CaseDTO {
+        val body = case.toStringJson()
+        return TestRailRequest.post("$API2/update_case/${case.id}", body, CaseDTO::class.java)
+    }
+
+    fun update(cases: List<CaseDTO>): List<CaseDTO> {
+        val result = mutableListOf<CaseDTO>()
+        cases.forEach {
+            result.add(update(it))
+        }
+
+        return result
+    }
+
+    fun update(caseId: Int, fields: Map<String, Any>): CaseDTO {
+        val body = objectMapper.mapToJsonWithSnakeCase(fields)
+        return TestRailRequest.post("$API2/update_case/$caseId", body, CaseDTO::class.java)
+    }
+
+    fun update(casesId: List<Int>, suiteId: Int, fields: Map<String, Any>): List<CaseDTO> {
+        val caseIds = mutableMapOf("caseIds" to casesId)
+        val map = fields + caseIds
+        val body = objectMapper.mapToJsonWithSnakeCase(map)
+        return TestRailRequest.post("$API2/update_cases/$suiteId", body, UpdatedCasesDTO::class.java).updatedCases
     }
 }

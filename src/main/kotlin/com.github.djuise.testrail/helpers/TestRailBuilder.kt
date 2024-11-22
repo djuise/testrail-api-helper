@@ -25,4 +25,8 @@ interface TestRailFunctions {
     fun getSections(projectId: Int, suiteId: Int): List<SectionDTO>
     fun getSectionsWithChilds(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO>
     fun getSectionWithChilds(projectId: Int, suiteId: Int, sectionsId: Int): List<SectionDTO>
+    fun updateTestCase(id: Int, fields: Map<String, Any>): CaseDTO
+    fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any>): List<CaseDTO>
+    fun updateTestCase(case: CaseDTO): CaseDTO
+    fun updateTestCases(cases: List<CaseDTO>): List<CaseDTO>
 }

@@ -1,9 +1,6 @@
 package com.github.djuise.testrail
 
-import com.github.djuise.testrail.api.dto.CaseDTO
-import com.github.djuise.testrail.api.dto.ProjectDTO
-import com.github.djuise.testrail.api.dto.SectionDTO
-import com.github.djuise.testrail.api.dto.SuiteDTO
+import com.github.djuise.testrail.api.dto.*
 import com.github.djuise.testrail.api.helpers.ProjectId
 import com.github.djuise.testrail.api.helpers.TestRailRunBuilder
 import com.github.djuise.testrail.api.requests.Cases
@@ -145,15 +142,81 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
         return TestRailRunBuilder.name(name)
     }
 
+    /**
+     * Get sections for a suite
+     *
+     * @param projectId The ID of the project that the suite belongs to.
+     * @param suiteId The suite ID within the project.
+     * @return Returns a List<SectionDTO>.
+     */
     override fun getSections(projectId: Int, suiteId: Int): List<SectionDTO> {
         return Sections.getAll(projectId, suiteId)
     }
 
+    /**
+     * Get sections with their childs for a suite
+     *
+     * @param projectId The ID of the project that the suite belongs to.
+     * @param suiteId The suite ID within the project.
+     * @param sectionsId The parent section ids
+     * @return Returns a List<SectionDTO>.
+     */
     override fun getSectionsWithChilds(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO> {
         return Sections.getSectionsWithChildren(projectId, suiteId, sectionsId)
     }
 
-    override fun getSectionWithChilds(projectId: Int, suiteId: Int, sectionsId: Int): List<SectionDTO> {
-        return Sections.getSectionsWithChildren(projectId, suiteId, listOf(sectionsId))
+    /**
+     * Get sections with their childs for a suite
+     *
+     * @param projectId The ID of the project that the suite belongs to.
+     * @param suiteId The suite ID within the project.
+     * @param sectionId The parent section id
+     * @return Returns a List<SectionDTO>.
+     */
+    override fun getSectionWithChilds(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO> {
+        return Sections.getSectionsWithChildren(projectId, suiteId, listOf(sectionId))
+    }
+
+    /**
+     * Update test case
+     *
+     * @param id The Test Case ID
+     * @param fields The map with updated fields
+     * @return Returns a CaseDTO.
+     */
+    override fun updateTestCase(id: Int, fields: Map<String, Any>): CaseDTO {
+        return Cases.update(id, fields)
+    }
+
+    /**
+     * Update test case
+     *
+     * @param id The Test Cases IDs
+     * @param suiteId The Suite ID
+     * @param fields The map with updated fields
+     * @return Returns a List<CaseDTO>.
+     */
+    override fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any>): List<CaseDTO> {
+        return Cases.update(id, suiteId, fields)
+    }
+
+    /**
+     * Update test case
+     *
+     * @param case The Test Case (CaseDTO)
+     * @return Returns a CaseDTO.
+     */
+    override fun updateTestCase(case: CaseDTO): CaseDTO {
+        return Cases.update(case)
+    }
+
+    /**
+     * Update test case
+     *
+     * @param case The list of Test Case (List<CaseDTO>)
+     * @return Returns a List<CaseDTO>.
+     */
+    override fun updateTestCases(cases: List<CaseDTO>): List<CaseDTO> {
+        return Cases.update(cases)
     }
 }
