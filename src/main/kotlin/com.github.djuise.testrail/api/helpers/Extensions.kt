@@ -3,7 +3,7 @@ package com.github.djuise.testrail.api.helpers
 import com.fasterxml.jackson.databind.ObjectMapper
 
 
-fun ObjectMapper.mapToJsonWithSnakeCase(map: Map<String, Any>): String {
+fun ObjectMapper.mapToJsonWithSnakeCase(map: Map<String, Any?>): String {
     return objectMapper.writeValueAsString(map).camelToSnake()
 }
 

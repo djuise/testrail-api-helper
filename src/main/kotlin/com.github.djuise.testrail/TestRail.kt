@@ -184,7 +184,7 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
      * @param fields The map with updated fields
      * @return Returns a CaseDTO.
      */
-    override fun updateTestCase(id: Int, fields: Map<String, Any>): CaseDTO {
+    override fun updateTestCase(id: Int, fields: Map<String, Any?>): CaseDTO {
         return Cases.update(id, fields)
     }
 
@@ -196,7 +196,7 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
      * @param fields The map with updated fields
      * @return Returns a List<CaseDTO>.
      */
-    override fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any>): List<CaseDTO> {
+    override fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any?>): List<CaseDTO> {
         return Cases.update(id, suiteId, fields)
     }
 

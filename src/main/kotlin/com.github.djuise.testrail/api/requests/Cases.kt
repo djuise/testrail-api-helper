@@ -49,12 +49,12 @@ object Cases {
         return result
     }
 
-    fun update(caseId: Int, fields: Map<String, Any>): CaseDTO {
+    fun update(caseId: Int, fields: Map<String, Any?>): CaseDTO {
         val body = objectMapper.mapToJsonWithSnakeCase(fields)
         return TestRailRequest.post("$API2/update_case/$caseId", body, CaseDTO::class.java)
     }
 
-    fun update(casesId: List<Int>, suiteId: Int, fields: Map<String, Any>): List<CaseDTO> {
+    fun update(casesId: List<Int>, suiteId: Int, fields: Map<String, Any?>): List<CaseDTO> {
         val caseIds = mutableMapOf("caseIds" to casesId)
         val map = fields + caseIds
         val body = objectMapper.mapToJsonWithSnakeCase(map)
