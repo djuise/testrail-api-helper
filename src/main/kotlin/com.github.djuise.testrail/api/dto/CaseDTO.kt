@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.djuise.testrail.api.helpers.UnixTimestampDeserializer
-import com.github.djuise.testrail.api.helpers.camelToSnake
+import com.github.djuise.testrail.api.helpers.jsonMapper
 import com.github.djuise.testrail.api.helpers.objectMapper
 import java.util.*
 
@@ -47,6 +47,6 @@ data class CaseDTO(
             resultMap.putAll(otherFields)
         }
 
-        return objectMapper.writeValueAsString(resultMap).camelToSnake()
+        return jsonMapper.writeValueAsString(resultMap)
     }
 }
