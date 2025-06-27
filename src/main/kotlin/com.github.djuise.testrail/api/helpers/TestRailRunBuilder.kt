@@ -10,12 +10,12 @@ import com.github.djuise.testrail.api.requests.Run
  *
  * @property name The name of the test run.
  */
-class TestRailRunBuilder private constructor(private val name: String): ProjectId {
+class TestRailRunBuilder private constructor(private val name: String): ProjectId, SuiteId, TestRunFunctions {
 
     private var projectId: Int = -1
     private var suiteId: Int? = null
     private var description: String? = null
-    private var casesId: List<Int>? = null
+    private var casesId: MutableSet<Int> = mutableSetOf()
 
     companion object {
         /**
@@ -29,78 +29,37 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
         }
     }
 
-    /**
-     * Sets the project ID for the test run.
-     *
-     * @param id The project ID.
-     * @return Returns this `Run` instance to allow method chaining.
-     */
     override fun projectId(id: Int): TestRailRunBuilder {
         this.projectId = id
 
         return this
     }
 
-    /**
-     * Sets the suite ID for the test run.
-     * Optional if the project is operating in single suite mode, required otherwise.
-     *
-     * @param id The suite ID.
-     * @return Returns this `Run` instance to allow method chaining.
-     */
-    fun suiteId(id: Int): TestRailRunBuilder {
+    override fun suiteId(id: Int): TestRailRunBuilder {
         this.suiteId = id
 
         return this
     }
 
-    /**
-     * Sets the description for the test run.
-     * Optional function
-     *
-     * @param description The description of the test run.
-     * @return Returns this `Run` instance to allow method chaining.
-     */
-    fun description(description: String): TestRailRunBuilder {
+    override fun description(description: String): TestRunFunctions {
         this.description = description
 
         return this
     }
 
-    /**
-     * Sets the case IDs directly for the test run.
-     * Optional function. If it will be skipped then all testcases from the suite will be added.
-     *
-     * @param casesId The list of case IDs to include in the test run.
-     * @return Returns this `Run` instance to allow method chaining.
-     */
-    @JvmName("casesById")
-    fun cases(casesId: List<Int>): TestRailRunBuilder {
-        this.casesId = casesId
+    override fun casesById(casesId: Set<Int>): TestRunFunctions {
+        this.casesId.addAll(casesId)
 
         return this
     }
 
-    /**
-     * Sets the case IDs for the test run based on a list of `CaseDTO`.
-     * Optional function. If it will be skipped then all testcases from the suite will be added.
-     *
-     * @param casesList The list of `CaseDTO` from which to extract the IDs.
-     * @return Returns this `Run` instance to allow method chaining.
-     */
-    fun cases(casesList: List<CaseDTO>): TestRailRunBuilder {
-        this.casesId = casesList.map { it.id }
+    override fun cases(casesList: Set<CaseDTO>): TestRunFunctions {
+        this.casesId.addAll(casesList.map { it.id })
 
         return this
     }
 
-    /**
-     * Creates the test run in TestRail and returns the new run ID.
-     *
-     * @return The ID of the newly created test run.
-     * @throws TestRailException if the request to create the test run fails.
-     */
-    fun create(): Int {
+    override fun create(): Int {
         val run = CreateRunDTO(name, suiteId, description, casesId)
 
         return Run.create(projectId, run)

@@ -8,9 +8,9 @@ data class CreateRunDTO(
     val name: String,
     val suiteId: Int?,
     val description: String?,
-    val caseIds: List<Int>?
+    val caseIds: Set<Int>
 ) {
-    val includeAll: Boolean = caseIds.isNullOrEmpty()
+    val includeAll: Boolean = caseIds.isEmpty()
 }
 
 data class RunDTO(

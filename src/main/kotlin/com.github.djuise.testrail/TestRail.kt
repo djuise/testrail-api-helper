@@ -1,15 +1,18 @@
 package com.github.djuise.testrail
 
-import com.github.djuise.testrail.api.dto.*
+import com.github.djuise.testrail.api.dto.CaseDTO
+import com.github.djuise.testrail.api.dto.ProjectDTO
+import com.github.djuise.testrail.api.dto.SectionDTO
+import com.github.djuise.testrail.api.dto.SuiteDTO
 import com.github.djuise.testrail.api.helpers.ProjectId
+import com.github.djuise.testrail.api.helpers.SuiteId
 import com.github.djuise.testrail.api.helpers.TestRailRunBuilder
+import com.github.djuise.testrail.api.helpers.TestRunFunctions
 import com.github.djuise.testrail.api.requests.Cases
 import com.github.djuise.testrail.api.requests.Projects
 import com.github.djuise.testrail.api.requests.Sections
 import com.github.djuise.testrail.api.requests.Suites
-import com.github.djuise.testrail.helpers.TCredential
-import com.github.djuise.testrail.helpers.TPassword
-import com.github.djuise.testrail.helpers.TestRailFunctions
+import com.github.djuise.testrail.helpers.*
 import java.util.*
 
 /**
@@ -17,7 +20,11 @@ import java.util.*
  * It supports authentication via username and password or API token, and offers methods to manage projects, test suites, and test cases.
  */
 
-class TestRail private constructor(): TCredential, TPassword, TestRailFunctions {
+class TestRail private constructor(): TUsername,
+    TPassword,
+    TestRailFunctions,
+    TestRailFunctionsForConfiguredProject,
+    TestRailFunctionsForConfiguredProjectAndSuite {
 
     companion object {
         /** The base URL of the TestRail server. */
@@ -26,13 +33,19 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
         /** The authentication token used for API requests. Generated automatically depends on provided credentials. */
         lateinit var token: String
 
+        /** The project id with client works. Sets in builder or can be empty */
+        var projectId: Int? = null
+
+        /** The suite id with client works. Sets in builder or can be empty */
+        var suiteId: Int? = null
+
         /**
          * Configures the base URL for the TestRail API.
          *
          * @param url The base URL of the TestRail server.
          * @return Returns an instance of TCredential for chaining configuration.
          */
-        fun url(url: String): TCredential {
+        fun url(url: String): TUsername {
             baseUrl = url
             return TestRail()
         }
@@ -42,38 +55,21 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
     private lateinit var username: String
     private lateinit var password: String
     private lateinit var apiToken: String
+    private var projectId: Int? = null
+    private var suiteId: Int? = null
 
-    /**
-     * Sets the username for API authentication.
-     *
-     * @param username The username used for authentication.
-     * @return Returns an instance of TPassword to continue the authentication process.
-     */
     override fun username(username: String): TPassword {
         this.username = username
 
         return this
     }
 
-    /**
-     * Sets the password for API authentication and encodes credentials.
-     *
-     * @param password The password used for authentication.
-     * @return Returns an instance of TestRailFunctions allowing access to API functions.
-     */
     override fun password(password: String): TestRailFunctions {
         this.password = password
         token = Base64.getEncoder().encodeToString("$username:$password".toByteArray())
 
         return this
     }
-
-    /**
-     * Sets the API token for authentication and encodes it.
-     *
-     * @param apiToken The API token provided by TestRail.
-     * @return Returns an instance of TestRailFunctions allowing access to API functions.
-     */
     override fun apiToken(apiToken: String): TestRailFunctions {
         this.apiToken = apiToken
         token = Base64.getEncoder().encodeToString("$username:$apiToken".toByteArray())
@@ -81,141 +77,101 @@ class TestRail private constructor(): TCredential, TPassword, TestRailFunctions 
         return this
     }
 
-    /**
-     * Retrieves a list of all projects from TestRail.
-     *
-     * @return Returns a List<ProjectDTO>
-     */
-    override fun getProjects(): List<ProjectDTO> {
-        return Projects.get()
+    override fun projectId(id: Int): TestRailFunctionsForConfiguredProject {
+        this.projectId = id
+
+        return this
     }
 
-    /**
-     * Searches for the first project by name and returns its ID.
-     *
-     * @param name The name of the project to search for.
-     * @return Returns the ID of the first found project or null if no match is found.
-     */
-    override fun getFirstFoundProjectIdByName(name: String): Int? {
-        return getProjects().firstOrNull { it.name.lowercase() == name.lowercase() }?.id
+    override fun suiteId(id: Int): TestRailFunctionsForConfiguredProjectAndSuite {
+        this.suiteId = id
+
+        return this
     }
 
-    /**
-     * Retrieves a list of test suites associated with a given project ID.
-     *
-     * @param projectId The ID of the project.
-     * @return Returns a list of Suite objects.
-     */
-    override fun getSuites(projectId: Int): List<SuiteDTO> {
-        return Suites.get(projectId)
-    }
+    override fun getProjects(): List<ProjectDTO> =
+        Projects.get()
 
-    /**
-     * Searches for the first suite by name within a specific project and returns its ID.
-     *
-     * @param name The name of the suite to search for.
-     * @param projectId The ID of the project that the suite belongs to.
-     * @return Returns the ID of the first found suite or null if no match is found.
-     */
-    override fun getFirstFoundSuiteIdByName(name: String, projectId: Int): Int? {
-            return getSuites(projectId).firstOrNull { it.name.lowercase() == name.lowercase() }?.id
-    }
+    // Functions without Project ID and Suite ID
 
-    /**
-     * Retrieves all cases for a given project and suite ID.
-     *
-     * @param projectId The project ID.
-     * @param suiteId The suite ID within the project.
-     * @return Returns a List<CaseDTO>
-     */
-    override fun getCases(projectId: Int, suiteId: Int): List<CaseDTO> {
-        return Cases.getAll(projectId, suiteId)
-    }
+    override fun getSuites(projectId: Int): List<SuiteDTO> =
+        Suites.get(projectId)
 
-    /**
-     * Creates a new test run TestRail run builder within TestRail.
-     *
-     * @param name The name of the new test run.
-     * @return Returns a TestRailRunBuilder.
-     */
-    override fun createRun(name: String): ProjectId {
-        return TestRailRunBuilder.name(name)
-    }
+    override fun getFirstFoundSuiteIdByName(name: String, projectId: Int): Int? =
+        getSuites(projectId).firstOrNull { it.name.lowercase() == name.lowercase() }?.id
 
-    /**
-     * Get sections for a suite
-     *
-     * @param projectId The ID of the project that the suite belongs to.
-     * @param suiteId The suite ID within the project.
-     * @return Returns a List<SectionDTO>.
-     */
-    override fun getSections(projectId: Int, suiteId: Int): List<SectionDTO> {
-        return Sections.getAll(projectId, suiteId)
-    }
+    override fun getFirstFoundProjectIdByName(name: String): Int? =
+        getProjects().firstOrNull { it.name.lowercase() == name.lowercase() }?.id
 
-    /**
-     * Get sections with their childs for a suite
-     *
-     * @param projectId The ID of the project that the suite belongs to.
-     * @param suiteId The suite ID within the project.
-     * @param sectionsId The parent section ids
-     * @return Returns a List<SectionDTO>.
-     */
-    override fun getSectionsWithChilds(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO> {
-        return Sections.getSectionsWithChildren(projectId, suiteId, sectionsId)
-    }
+    override fun getCases(projectId: Int, suiteId: Int): List<CaseDTO> =
+        Cases.getAll(projectId, suiteId)
 
-    /**
-     * Get sections with their childs for a suite
-     *
-     * @param projectId The ID of the project that the suite belongs to.
-     * @param suiteId The suite ID within the project.
-     * @param sectionId The parent section id
-     * @return Returns a List<SectionDTO>.
-     */
-    override fun getSectionWithChilds(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO> {
-        return Sections.getSectionsWithChildren(projectId, suiteId, listOf(sectionId))
-    }
+    override fun createRun(name: String): ProjectId =
+        TestRailRunBuilder.name(name)
 
-    /**
-     * Update test case
-     *
-     * @param id The Test Case ID
-     * @param fields The map with updated fields
-     * @return Returns a CaseDTO.
-     */
+    override fun getSections(projectId: Int, suiteId: Int): List<SectionDTO> =
+        Sections.getAll(projectId, suiteId)
+
+    override fun getSectionsWithChildren(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO> =
+        Sections.getSectionsWithChildren(projectId, suiteId, sectionsId)
+
+    override fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO> =
+        getSectionsWithChildren(projectId, suiteId, listOf(sectionId))
+
+    // Functions with configured Project ID
+
+    override fun getSuites(): List<SuiteDTO> =
+        getSuites(projectId!!)
+
+    override fun getCases(suiteId: Int): List<CaseDTO> =
+        getCases(projectId!!, suiteId)
+
+    override fun createRunForCurrentProject(name: String): SuiteId =
+        TestRailRunBuilder.name(name).projectId(projectId!!)
+
+    override fun getSections(suiteId: Int): List<SectionDTO> =
+        getSections(projectId!!, suiteId)
+
+    override fun getSectionsWithChildren(suiteId: Int, sectionsId: List<Int>): List<SectionDTO> =
+        getSectionsWithChildren(projectId!!, suiteId, sectionsId)
+
+    override fun getSectionWithChildren(suiteId: Int, sectionId: Int): List<SectionDTO> =
+        getSectionsWithChildren(suiteId, listOf(sectionId))
+
+    override fun getFirstFoundSuiteIdByName(name: String): Int? =
+        getFirstFoundSuiteIdByName(name, projectId!!)
+
+    // Function with configured Project ID and Suite ID
+
+    override fun getCases(): List<CaseDTO> =
+        getCases(suiteId!!)
+
+    override fun createRunForCurrentProjectAndSuite(name: String): TestRunFunctions =
+        TestRailRunBuilder.name(name).projectId(projectId!!).suiteId(suiteId!!)
+
+    override fun getSections(): List<SectionDTO> =
+        getSections(suiteId!!)
+
+    override fun getSectionsWithChildren(sectionsId: List<Int>): List<SectionDTO> =
+        getSectionsWithChildren(suiteId!!, sectionsId)
+
+    override fun getSectionWithChildren(sectionId: Int): List<SectionDTO> =
+        getSectionsWithChildren(listOf(sectionId))
+
+    // Common functions
+
     override fun updateTestCase(id: Int, fields: Map<String, Any?>): CaseDTO {
         return Cases.update(id, fields)
     }
 
-    /**
-     * Update test case
-     *
-     * @param id The Test Cases IDs
-     * @param suiteId The Suite ID
-     * @param fields The map with updated fields
-     * @return Returns a List<CaseDTO>.
-     */
     override fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any?>): List<CaseDTO> {
         return Cases.update(id, suiteId, fields)
     }
 
-    /**
-     * Update test case
-     *
-     * @param case The Test Case (CaseDTO)
-     * @return Returns a CaseDTO.
-     */
     override fun updateTestCase(case: CaseDTO): CaseDTO {
         return Cases.update(case)
     }
 
-    /**
-     * Update test case
-     *
-     * @param case The list of Test Case (List<CaseDTO>)
-     * @return Returns a List<CaseDTO>.
-     */
     override fun updateTestCases(cases: List<CaseDTO>): List<CaseDTO> {
         return Cases.update(cases)
     }
