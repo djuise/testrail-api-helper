@@ -167,6 +167,10 @@ class TestRail private constructor(): TUsername,
     override fun getMainSectionForChild(sectionId: Int): SectionDTO? =
         getMainSectionForChild(projectId!!, suiteId!!, sectionId)
 
+    override fun updateTestCases(id: List<Int>, fields: Map<String, Any?>): List<CaseDTO> {
+        return updateTestCases(id, suiteId!!, fields)
+    }
+
     // Common functions
 
     override fun updateTestCase(id: Int, fields: Map<String, Any?>): CaseDTO {

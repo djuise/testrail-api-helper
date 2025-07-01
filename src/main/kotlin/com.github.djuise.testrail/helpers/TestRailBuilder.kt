@@ -219,6 +219,16 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
      * @return Returns a TestRailRunBuilder.
      */
     fun createRunForCurrentProjectAndSuite(name: String): TestRunFunctions
+
+    /**
+     * Update test case
+     *
+     * @param id The Test Cases IDs
+     * @param suiteId The Suite ID
+     * @param fields The map with updated fields
+     * @return Returns a List<CaseDTO>.
+     */
+    fun updateTestCases(id: List<Int>, fields: Map<String, Any?>): List<CaseDTO>
 }
 
 interface Functions {
