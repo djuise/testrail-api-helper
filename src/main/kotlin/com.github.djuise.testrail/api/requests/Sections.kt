@@ -46,4 +46,29 @@ object Sections {
 
         return result.toList()
     }
+
+    fun getMainSectionForChild(projectId: Int, suiteId: Int, childId: Int): SectionDTO? {
+        val allSections = getAll(projectId, suiteId)
+        var section = allSections.firstOrNull { it.id == childId }
+        var counter = allSections.size
+
+        while (counter > 0) {
+            if (section == null)
+                return null
+
+            if (section.parentId == null)
+                return section
+
+            val parentSection = allSections.firstOrNull { it.id == section!!.parentId }
+
+            if (parentSection == null)
+                return section
+
+            section = parentSection
+
+            counter--
+        }
+
+        return section
+    }
 }

@@ -118,6 +118,9 @@ class TestRail private constructor(): TUsername,
     override fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO> =
         getSectionsWithChildren(projectId, suiteId, listOf(sectionId))
 
+    override fun getMainSectionForChild(projectId: Int, suiteId: Int, sectionId: Int): SectionDTO? =
+        Sections.getMainSectionForChild(projectId, suiteId, sectionId)
+
     // Functions with configured Project ID
 
     override fun getSuites(): List<SuiteDTO> =
@@ -138,6 +141,9 @@ class TestRail private constructor(): TUsername,
     override fun getSectionWithChildren(suiteId: Int, sectionId: Int): List<SectionDTO> =
         getSectionsWithChildren(suiteId, listOf(sectionId))
 
+    override fun getMainSectionForChild(suiteId: Int, sectionId: Int): SectionDTO? =
+        getMainSectionForChild(projectId!!, suiteId, sectionId)
+
     override fun getFirstFoundSuiteIdByName(name: String): Int? =
         getFirstFoundSuiteIdByName(name, projectId!!)
 
@@ -157,6 +163,9 @@ class TestRail private constructor(): TUsername,
 
     override fun getSectionWithChildren(sectionId: Int): List<SectionDTO> =
         getSectionsWithChildren(listOf(sectionId))
+
+    override fun getMainSectionForChild(sectionId: Int): SectionDTO? =
+        getMainSectionForChild(projectId!!, suiteId!!, sectionId)
 
     // Common functions
 

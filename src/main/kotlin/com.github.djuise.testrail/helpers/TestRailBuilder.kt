@@ -101,6 +101,16 @@ interface TestRailFunctions: Functions {
     fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO>
 
     /**
+     * Get sections parent for child with id
+     *
+     * @param projectId The ID of the project that the suite belongs to.
+     * @param suiteId The suite ID within the project.
+     * @param sectionId The child section id
+     * @return Returns a SectionDTO.
+     */
+    fun getMainSectionForChild(projectId: Int, suiteId: Int, sectionId: Int): SectionDTO?
+
+    /**
      * Creates a new test run TestRail run builder within TestRail.
      *
      * @param name The name of the new test run.
@@ -146,6 +156,15 @@ interface TestRailFunctionsForConfiguredProject: Functions, ConfiguredProjectFun
     fun getSectionWithChildren(suiteId: Int, sectionId: Int): List<SectionDTO>
 
     /**
+     * Get sections parent for child with id
+     *
+     * @param suiteId The suite ID within the project.
+     * @param sectionId The child section id
+     * @return Returns a SectionDTO.
+     */
+    fun getMainSectionForChild(suiteId: Int, sectionId: Int): SectionDTO?
+
+    /**
      * Creates a new test run TestRail run builder within TestRail.
      *
      * @param name The name of the new test run.
@@ -184,6 +203,14 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
      * @return Returns a List<SectionDTO>.
      */
     fun getSectionWithChildren(sectionId: Int): List<SectionDTO>
+
+    /**
+     * Get sections parent for child with id
+     *
+     * @param sectionId The child section id
+     * @return Returns a SectionDTO.
+     */
+    fun getMainSectionForChild(sectionId: Int): SectionDTO?
 
     /**
      * Creates a new test run TestRail run builder within TestRail.
