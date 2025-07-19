@@ -1,11 +1,10 @@
 package com.github.djuise.testrail.api.dto
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.djuise.testrail.api.helpers.UnixTimestampDeserializer
-import com.github.djuise.testrail.api.helpers.jsonMapper
-import com.github.djuise.testrail.api.helpers.objectMapper
 import java.util.*
 
 data class CasesDTO(val cases: List<CaseDTO>)
@@ -31,22 +30,20 @@ data class CaseDTO(
     val updatedOn: Date?,
     val isDeleted: Int?,
     val displayOrder: Int?,
-    var otherFields: MutableMap<String, Any?> = mutableMapOf()
+    @JsonIgnore
+    val otherFields: MutableMap<String, Any?> = mutableMapOf()
 ) {
+    // Needs to set other fields into otherFields
     @JsonAnySetter
-    fun setDynamicField(key: String, value: Any?) {
+    fun setOtherFields(key: String, value: Any?) {
         otherFields[key] = value
     }
 
-    fun toStringJson(): String {
-        val testCaseMap = objectMapper.convertValue<Map<String, Any?>>(this)
+    // Needs to get other fields as their fields for JSON
+    @JsonAnyGetter
+    fun getDynamicFields(): Map<String, Any?> = otherFields
 
-        val resultMap = testCaseMap.toMutableMap()
-        val otherFields = resultMap.remove("otherFields") as? Map<String, Any?>
-        if (otherFields != null) {
-            resultMap.putAll(otherFields)
-        }
-
-        return jsonMapper.writeValueAsString(resultMap)
+    fun updateOtherField(key: String, value: Any?) {
+        otherFields[key] = value
     }
 }

@@ -7,9 +7,9 @@ object FileProperties {
 
     private val properties = Properties().apply { load(FileInputStream("src/test/resources/credentials")) }
 
-    val testRailUrl = properties.getProperty("url")
-    val username = properties.getProperty("username")
-    val apiToken = properties.getProperty("apiToken")
-    val projectId = properties.getProperty("projectId").toInt()
-    val suiteId = properties.getProperty("suiteId").toInt()
+    val testRailUrl: String? = properties.getProperty("url")
+    val username: String? = properties.getProperty("username")
+    val apiToken: String? = properties.getProperty("apiToken")
+    val projectId: Int = properties.getProperty("projectId").toInt()
+    val suiteId: Int = properties.getProperty("suiteId").toInt()
 }

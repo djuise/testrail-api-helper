@@ -7,9 +7,9 @@ class MainTest {
 
     @Test
     fun mainTest() {
-        val allCases = TestRail.url(FileProperties.testRailUrl)
-            .username(FileProperties.username)
-            .apiToken(FileProperties.apiToken)
+        val allCases = TestRail.url(FileProperties.testRailUrl!!)
+            .username(FileProperties.username!!)
+            .apiToken(FileProperties.apiToken!!)
             .projectId(FileProperties.projectId)
             .suiteId(FileProperties.suiteId)
             .getCases()

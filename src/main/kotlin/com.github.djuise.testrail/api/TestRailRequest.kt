@@ -31,18 +31,6 @@ object TestRailRequest {
         return objectMapper.parse(stringBody, clazz)
     }
 
-    fun post(baseUrl: String, jsonBody: String): Response {
-        val mediaType = "application/json".toMediaTypeOrNull()
-        val body: RequestBody = jsonBody.toRequestBody(mediaType)
-
-        val request = requestBuilder
-            .url("${TestRail.baseUrl}/$baseUrl")
-            .post(body)
-            .build()
-
-        return client.newCall(request).execute()
-    }
-
     fun <T>post(baseUrl: String, jsonBody: String, clazz: Class<T>): T {
         val response = post(baseUrl, jsonBody)
 
@@ -52,5 +40,17 @@ object TestRailRequest {
                 |Error: ${response.body?.string()}""".trimMargin())
 
         return objectMapper.parse(response.body?.string(), clazz)
+    }
+
+    private fun post(baseUrl: String, jsonBody: String): Response {
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val body: RequestBody = jsonBody.toRequestBody(mediaType)
+
+        val request = requestBuilder
+            .url("${TestRail.baseUrl}/$baseUrl")
+            .post(body)
+            .build()
+
+        return client.newCall(request).execute()
     }
 }
