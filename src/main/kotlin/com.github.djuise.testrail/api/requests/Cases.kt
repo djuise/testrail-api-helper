@@ -41,15 +41,6 @@ object Cases {
         return TestRailRequest.post("$API2/update_case/${case.id}", body, CaseDTO::class.java)
     }
 
-    fun update(cases: List<CaseDTO>): List<CaseDTO> {
-        val result = mutableListOf<CaseDTO>()
-        cases.forEach {
-            result.add(update(it))
-        }
-
-        return result
-    }
-
     fun update(caseId: Int, fields: Map<String, Any?>): CaseDTO {
         val body = objectMapper.mapToJsonWithSnakeCase(fields)
         return TestRailRequest.post("$API2/update_case/$caseId", body, CaseDTO::class.java)
