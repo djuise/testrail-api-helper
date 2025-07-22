@@ -268,14 +268,6 @@ interface Functions {
     fun updateTestCase(case: CaseDTO): CaseDTO
 
     /**
-     * Update test case
-     *
-     * @param cases The list of Test Case (List<CaseDTO>)
-     * @return Returns a List<CaseDTO>.
-     */
-    fun updateTestCases(cases: List<CaseDTO>): List<CaseDTO>
-
-    /**
      * Searches for the first project by name and returns its ID.
      *
      * @param name The name of the project to search for.

@@ -5,7 +5,7 @@
 
   <groupId>com.github.djuise</groupId>
   <artifactId>testrail-api-helper</artifactId>
-  <version>3.0.7</version>
+  <version>3.0.8</version>
   <packaging>jar</packaging>
 
   <name>TestRailApiHelper</name>

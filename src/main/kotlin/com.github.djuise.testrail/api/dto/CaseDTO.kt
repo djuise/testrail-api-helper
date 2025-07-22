@@ -21,7 +21,7 @@ data class CaseDTO(
     var milestoneId: Int?,
     var priorityId: Int?,
     var refs: String?,
-    var sectionId: Int?,
+    var sectionId: Int,
     var suiteId: Int,
     var templateId: Int?,
     var typeId: Int?,

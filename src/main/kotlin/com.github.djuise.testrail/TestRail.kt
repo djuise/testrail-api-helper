@@ -184,8 +184,4 @@ class TestRail private constructor(): TUsername,
     override fun updateTestCase(case: CaseDTO): CaseDTO {
         return Cases.update(case)
     }
-
-    override fun updateTestCases(cases: List<CaseDTO>): List<CaseDTO> {
-        return Cases.update(cases)
-    }
 }
