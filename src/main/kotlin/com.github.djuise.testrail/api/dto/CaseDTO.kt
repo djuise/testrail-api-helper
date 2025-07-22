@@ -41,9 +41,9 @@ data class CaseDTO(
 
     // Needs to get other fields as their fields for JSON
     @JsonAnyGetter
-    fun getDynamicFields(): Map<String, Any?> = otherFields
+    fun getDynamicFields(): Map<String, Any?> =
+        otherFields.mapKeys { (key, _) -> key.toSnakeCase() }
 
-    fun updateOtherField(key: String, value: Any?) {
-        otherFields[key] = value
-    }
+    private fun String.toSnakeCase() =
+        replace(Regex("([a-z])([A-Z])"), "$1_$2").lowercase()
 }
