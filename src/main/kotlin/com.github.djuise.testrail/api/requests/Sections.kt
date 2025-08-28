@@ -6,13 +6,13 @@ import com.github.djuise.testrail.api.dto.SectionsDTO
 
 object Sections {
 
-    fun getAll(projectId: Int, suiteId: Int): List<SectionDTO> {
+    fun getAll(projectId: Int, suiteId: Int): Set<SectionDTO> {
 
         fun getSections(projectId: Int, suiteId: Int, offset: Int, limit: Int): SectionsDTO {
             return TestRailRequest.get("get_sections/$projectId&suite_id=$suiteId&limit=$limit&offset=$offset", SectionsDTO::class.java)
         }
 
-        val allSections = mutableListOf<SectionDTO>()
+        val allSections = mutableSetOf<SectionDTO>()
         var offset = 0
         val limit = 250
         var hasMoreCases = true
@@ -31,7 +31,7 @@ object Sections {
         return allSections
     }
 
-    fun getSectionsWithChildren(projectId: Int, suiteId: Int, parentIds: List<Int>): List<SectionDTO> {
+    fun getSectionsWithChildren(projectId: Int, suiteId: Int, parentIds: List<Int>): Set<SectionDTO> {
         val allSections = getAll(projectId, suiteId)
         val result = mutableSetOf<SectionDTO>()
         val stack = ArrayDeque(allSections.filter { it.id in parentIds })
@@ -44,7 +44,7 @@ object Sections {
             }
         }
 
-        return result.toList()
+        return result.toSet()
     }
 
     fun getMainSectionForChild(projectId: Int, suiteId: Int, childId: Int): SectionDTO? {

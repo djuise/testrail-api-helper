@@ -9,7 +9,7 @@ import java.io.IOException
 
 object Suites {
 
-    fun get(projectId: Int): List<SuiteDTO> {
+    fun get(projectId: Int): Set<SuiteDTO> {
         val response = TestRailRequest.get("$API2/get_suites/$projectId/")
 
         return response.use { resp ->
@@ -17,7 +17,7 @@ object Suites {
                 throw IOException("Response code: ${resp.code}\nBody: ${resp.body?.string()}")
             }
             val stringBody = response.body?.string()
-            objectMapper.readValue(objectMapper.createParser(stringBody), object : TypeReference<List<SuiteDTO>>() {})
+            objectMapper.readValue(objectMapper.createParser(stringBody), object : TypeReference<Set<SuiteDTO>>() {})
         }
     }
 }

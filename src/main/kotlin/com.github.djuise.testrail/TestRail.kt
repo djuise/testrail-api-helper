@@ -89,12 +89,12 @@ class TestRail private constructor(): TUsername,
         return this
     }
 
-    override fun getProjects(): List<ProjectDTO> =
+    override fun getProjects(): Set<ProjectDTO> =
         Projects.get()
 
     // Functions without Project ID and Suite ID
 
-    override fun getSuites(projectId: Int): List<SuiteDTO> =
+    override fun getSuites(projectId: Int): Set<SuiteDTO> =
         Suites.get(projectId)
 
     override fun getFirstFoundSuiteIdByName(name: String, projectId: Int): Int? =
@@ -103,19 +103,19 @@ class TestRail private constructor(): TUsername,
     override fun getFirstFoundProjectIdByName(name: String): Int? =
         getProjects().firstOrNull { it.name.lowercase() == name.lowercase() }?.id
 
-    override fun getCases(projectId: Int, suiteId: Int): List<CaseDTO> =
+    override fun getCases(projectId: Int, suiteId: Int): Set<CaseDTO> =
         Cases.getAll(projectId, suiteId)
 
     override fun createRun(name: String): ProjectId =
         TestRailRunBuilder.name(name)
 
-    override fun getSections(projectId: Int, suiteId: Int): List<SectionDTO> =
+    override fun getSections(projectId: Int, suiteId: Int): Set<SectionDTO> =
         Sections.getAll(projectId, suiteId)
 
-    override fun getSectionsWithChildren(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO> =
+    override fun getSectionsWithChildren(projectId: Int, suiteId: Int, sectionsId: List<Int>): Set<SectionDTO> =
         Sections.getSectionsWithChildren(projectId, suiteId, sectionsId)
 
-    override fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO> =
+    override fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): Set<SectionDTO> =
         getSectionsWithChildren(projectId, suiteId, listOf(sectionId))
 
     override fun getMainSectionForChild(projectId: Int, suiteId: Int, sectionId: Int): SectionDTO? =
@@ -123,22 +123,22 @@ class TestRail private constructor(): TUsername,
 
     // Functions with configured Project ID
 
-    override fun getSuites(): List<SuiteDTO> =
+    override fun getSuites(): Set<SuiteDTO> =
         getSuites(projectId!!)
 
-    override fun getCases(suiteId: Int): List<CaseDTO> =
+    override fun getCases(suiteId: Int): Set<CaseDTO> =
         getCases(projectId!!, suiteId)
 
     override fun createRunForCurrentProject(name: String): SuiteId =
         TestRailRunBuilder.name(name).projectId(projectId!!)
 
-    override fun getSections(suiteId: Int): List<SectionDTO> =
+    override fun getSections(suiteId: Int): Set<SectionDTO> =
         getSections(projectId!!, suiteId)
 
-    override fun getSectionsWithChildren(suiteId: Int, sectionsId: List<Int>): List<SectionDTO> =
+    override fun getSectionsWithChildren(suiteId: Int, sectionsId: List<Int>): Set<SectionDTO> =
         getSectionsWithChildren(projectId!!, suiteId, sectionsId)
 
-    override fun getSectionWithChildren(suiteId: Int, sectionId: Int): List<SectionDTO> =
+    override fun getSectionWithChildren(suiteId: Int, sectionId: Int): Set<SectionDTO> =
         getSectionsWithChildren(suiteId, listOf(sectionId))
 
     override fun getMainSectionForChild(suiteId: Int, sectionId: Int): SectionDTO? =
@@ -149,25 +149,25 @@ class TestRail private constructor(): TUsername,
 
     // Function with configured Project ID and Suite ID
 
-    override fun getCases(): List<CaseDTO> =
+    override fun getCases(): Set<CaseDTO> =
         getCases(suiteId!!)
 
     override fun createRunForCurrentProjectAndSuite(name: String): TestRunFunctions =
         TestRailRunBuilder.name(name).projectId(projectId!!).suiteId(suiteId!!)
 
-    override fun getSections(): List<SectionDTO> =
+    override fun getSections(): Set<SectionDTO> =
         getSections(suiteId!!)
 
-    override fun getSectionsWithChildren(sectionsId: List<Int>): List<SectionDTO> =
+    override fun getSectionsWithChildren(sectionsId: List<Int>): Set<SectionDTO> =
         getSectionsWithChildren(suiteId!!, sectionsId)
 
-    override fun getSectionWithChildren(sectionId: Int): List<SectionDTO> =
+    override fun getSectionWithChildren(sectionId: Int): Set<SectionDTO> =
         getSectionsWithChildren(listOf(sectionId))
 
     override fun getMainSectionForChild(sectionId: Int): SectionDTO? =
         getMainSectionForChild(projectId!!, suiteId!!, sectionId)
 
-    override fun updateTestCases(id: List<Int>, fields: Map<String, Any?>): List<CaseDTO> {
+    override fun updateTestCases(id: List<Int>, fields: Map<String, Any?>): Set<CaseDTO> {
         return updateTestCases(id, suiteId!!, fields)
     }
 
@@ -177,7 +177,7 @@ class TestRail private constructor(): TUsername,
         return Cases.update(id, fields)
     }
 
-    override fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any?>): List<CaseDTO> {
+    override fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any?>): Set<CaseDTO> {
         return Cases.update(id, suiteId, fields)
     }
 

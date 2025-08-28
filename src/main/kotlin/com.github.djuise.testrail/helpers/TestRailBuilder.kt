@@ -51,7 +51,7 @@ interface TestRailFunctions: Functions {
      * @param projectId The ID of the project.
      * @return Returns a list of Suite objects.
      */
-    fun getSuites(projectId: Int): List<SuiteDTO>
+    fun getSuites(projectId: Int): Set<SuiteDTO>
 
     /**
      * Searches for the first suite by name within a specific project and returns its ID.
@@ -69,7 +69,7 @@ interface TestRailFunctions: Functions {
      * @param suiteId The suite ID within the project.
      * @return Returns a List<CaseDTO>
      */
-    fun getCases(projectId: Int, suiteId: Int): List<CaseDTO>
+    fun getCases(projectId: Int, suiteId: Int): Set<CaseDTO>
 
     /**
      * Get sections for a suite
@@ -78,7 +78,7 @@ interface TestRailFunctions: Functions {
      * @param suiteId The suite ID within the project.
      * @return Returns a List<SectionDTO>.
      */
-    fun getSections(projectId: Int, suiteId: Int): List<SectionDTO>
+    fun getSections(projectId: Int, suiteId: Int): Set<SectionDTO>
 
     /**
      * Get sections with their childs for a suite
@@ -88,7 +88,7 @@ interface TestRailFunctions: Functions {
      * @param sectionsId The parent section ids
      * @return Returns a List<SectionDTO>.
      */
-    fun getSectionsWithChildren(projectId: Int, suiteId: Int, sectionsId: List<Int>): List<SectionDTO>
+    fun getSectionsWithChildren(projectId: Int, suiteId: Int, sectionsId: List<Int>): Set<SectionDTO>
 
     /**
      * Get sections with their childs for a suite
@@ -98,7 +98,7 @@ interface TestRailFunctions: Functions {
      * @param sectionId The parent section id
      * @return Returns a List<SectionDTO>.
      */
-    fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): List<SectionDTO>
+    fun getSectionWithChildren(projectId: Int, suiteId: Int, sectionId: Int): Set<SectionDTO>
 
     /**
      * Get sections parent for child with id
@@ -128,7 +128,7 @@ interface TestRailFunctionsForConfiguredProject: Functions, ConfiguredProjectFun
      * @param suiteId The suite ID within the project.
      * @return Returns a List<CaseDTO>
      */
-    fun getCases(suiteId: Int): List<CaseDTO>
+    fun getCases(suiteId: Int): Set<CaseDTO>
 
     /**
      * Get sections for a suite
@@ -136,7 +136,7 @@ interface TestRailFunctionsForConfiguredProject: Functions, ConfiguredProjectFun
      * @param suiteId The suite ID within the project.
      * @return Returns a List<SectionDTO>.
      */
-    fun getSections(suiteId: Int): List<SectionDTO>
+    fun getSections(suiteId: Int): Set<SectionDTO>
 
     /**
      * Get sections with their childs for a suite
@@ -145,7 +145,7 @@ interface TestRailFunctionsForConfiguredProject: Functions, ConfiguredProjectFun
      * @param sectionsId The parent section ids
      * @return Returns a List<SectionDTO>.
      */
-    fun getSectionsWithChildren(suiteId: Int, sectionsId: List<Int>): List<SectionDTO>
+    fun getSectionsWithChildren(suiteId: Int, sectionsId: List<Int>): Set<SectionDTO>
 
     /**
      * Get sections with their childs for a suite
@@ -153,7 +153,7 @@ interface TestRailFunctionsForConfiguredProject: Functions, ConfiguredProjectFun
      * @param suiteId The suite ID within the project.
      * @return Returns a List<SectionDTO>.
      */
-    fun getSectionWithChildren(suiteId: Int, sectionId: Int): List<SectionDTO>
+    fun getSectionWithChildren(suiteId: Int, sectionId: Int): Set<SectionDTO>
 
     /**
      * Get sections parent for child with id
@@ -179,14 +179,14 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
      *
      * @return Returns a List<CaseDTO>
      */
-    fun getCases(): List<CaseDTO>
+    fun getCases(): Set<CaseDTO>
 
     /**
      * Get sections for a suite
      *
      * @return Returns a List<SectionDTO>.
      */
-    fun getSections(): List<SectionDTO>
+    fun getSections(): Set<SectionDTO>
 
     /**
      * Get sections with their childs for a suite
@@ -194,7 +194,7 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
      * @param sectionsId The parent section ids
      * @return Returns a List<SectionDTO>.
      */
-    fun getSectionsWithChildren(sectionsId: List<Int>): List<SectionDTO>
+    fun getSectionsWithChildren(sectionsId: List<Int>): Set<SectionDTO>
 
     /**
      * Get sections with their childs for a suite
@@ -202,7 +202,7 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
      * @param sectionId The parent section id
      * @return Returns a List<SectionDTO>.
      */
-    fun getSectionWithChildren(sectionId: Int): List<SectionDTO>
+    fun getSectionWithChildren(sectionId: Int): Set<SectionDTO>
 
     /**
      * Get sections parent for child with id
@@ -224,11 +224,10 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
      * Update test case
      *
      * @param id The Test Cases IDs
-     * @param suiteId The Suite ID
      * @param fields The map with updated fields
-     * @return Returns a List<CaseDTO>.
+     * @return Returns a Set<CaseDTO>.
      */
-    fun updateTestCases(id: List<Int>, fields: Map<String, Any?>): List<CaseDTO>
+    fun updateTestCases(id: List<Int>, fields: Map<String, Any?>): Set<CaseDTO>
 }
 
 interface Functions {
@@ -236,9 +235,9 @@ interface Functions {
     /**
      * Retrieves a list of all projects from TestRail.
      *
-     * @return Returns a List<ProjectDTO>
+     * @return Returns a Set<ProjectDTO>
      */
-    fun getProjects(): List<ProjectDTO>
+    fun getProjects(): Set<ProjectDTO>
 
     /**
      * Update test case
@@ -257,7 +256,7 @@ interface Functions {
      * @param fields The map with updated fields
      * @return Returns a List<CaseDTO>.
      */
-    fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any?>): List<CaseDTO>
+    fun updateTestCases(id: List<Int>, suiteId: Int, fields: Map<String, Any?>): Set<CaseDTO>
 
     /**
      * Update test case
@@ -282,7 +281,7 @@ interface ConfiguredProjectFunctions {
      *
      * @return Returns a list of Suite objects.
      */
-    fun getSuites(): List<SuiteDTO>
+    fun getSuites(): Set<SuiteDTO>
 
     /**
      * Searches for the first suite by name within a specific project and returns its ID.

@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.github.djuise.testrail.api.helpers.UnixTimestampDeserializer
 import java.util.*
 
-data class CasesDTO(val cases: List<CaseDTO>)
-data class UpdatedCasesDTO(val updatedCases: List<CaseDTO>)
+data class CasesDTO(val cases: Set<CaseDTO>)
+data class UpdatedCasesDTO(val updatedCases: Set<CaseDTO>)
 
 data class CaseDTO(
     val id: Int,
