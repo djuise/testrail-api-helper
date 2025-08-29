@@ -6,7 +6,7 @@ import com.github.djuise.testrail.api.dto.CasesDTO
 import com.github.djuise.testrail.api.dto.UpdatedCasesDTO
 import com.github.djuise.testrail.api.helpers.Constants.API2
 import com.github.djuise.testrail.api.helpers.jsonMapper
-import com.github.djuise.testrail.api.helpers.mapToJsonWithSnakeCase
+import com.github.djuise.testrail.api.helpers.mapToJson
 import com.github.djuise.testrail.api.helpers.objectMapper
 
 object Cases {
@@ -42,14 +42,14 @@ object Cases {
     }
 
     fun update(caseId: Int, fields: Map<String, Any?>): CaseDTO {
-        val body = objectMapper.mapToJsonWithSnakeCase(fields)
+        val body = objectMapper.mapToJson(fields)
         return TestRailRequest.post("$API2/update_case/$caseId", body, CaseDTO::class.java)
     }
 
     fun update(casesId: List<Int>, suiteId: Int, fields: Map<String, Any?>): Set<CaseDTO> {
         val caseIds = mutableMapOf("caseIds" to casesId)
         val map = fields + caseIds
-        val body = objectMapper.mapToJsonWithSnakeCase(map)
+        val body = objectMapper.mapToJson(map)
         return TestRailRequest.post("$API2/update_cases/$suiteId", body, UpdatedCasesDTO::class.java).updatedCases
     }
 }
