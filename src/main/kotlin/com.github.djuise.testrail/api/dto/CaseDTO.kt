@@ -9,24 +9,24 @@ import com.github.djuise.testrail.api.helpers.UnixTimestampDeserializer
 import java.util.*
 
 data class CasesDTO(val cases: Set<CaseDTO>)
-data class UpdatedCasesDTO(val updatedCases: Set<CaseDTO>)
+data class UpdatedCasesDTO(@JsonProperty("updated_cases") val updatedCases: Set<CaseDTO>)
 
 data class CaseDTO(
     val id: Int,
     var title: String,
+    var estimate: String?,
+    var refs: String?,
     @JsonProperty("created_by")
     var createdBy: Int,
     @JsonProperty("created_on")
     @JsonDeserialize(using = UnixTimestampDeserializer::class)
     var createdOn: Date,
-    var estimate: String?,
     @JsonProperty("estimate_forecast")
     var estimateForecast: String?,
     @JsonProperty("milestone_id")
     var milestoneId: Int?,
     @JsonProperty("priority_id")
     var priorityId: Int?,
-    var refs: String?,
     @JsonProperty("section_id")
     var sectionId: Int,
     @JsonProperty("suite_id")

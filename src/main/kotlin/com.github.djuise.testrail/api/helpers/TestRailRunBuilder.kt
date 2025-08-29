@@ -60,7 +60,7 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
     }
 
     override fun create(): Int {
-        val run = CreateRunDTO(name, suiteId, description, casesId)
+        val run = CreateRunDTO(name, description, suiteId, casesId)
 
         return Run.create(projectId, run)
     }
