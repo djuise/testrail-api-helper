@@ -1,15 +1,17 @@
 package com.github.djuise.testrail.api.requests
 
-import com.github.djuise.testrail.api.TestRailRequest
+import com.github.djuise.testrail.api.TestRailApiClient
 import com.github.djuise.testrail.api.dto.SectionDTO
-import com.github.djuise.testrail.api.dto.SectionsDTO
+import com.github.djuise.testrail.api.helpers.Constants.API_V
+import com.github.djuise.testrail.api.helpers.call
 
 object Sections {
 
     fun getAll(projectId: Int, suiteId: Int): Set<SectionDTO> {
 
-        fun getSections(projectId: Int, suiteId: Int, offset: Int, limit: Int): SectionsDTO {
-            return TestRailRequest.get("get_sections/$projectId&suite_id=$suiteId&limit=$limit&offset=$offset", SectionsDTO::class.java)
+        fun getSections(projectId: Int, suiteId: Int, offset: Int, limit: Int): List<SectionDTO> {
+            val url = "$API_V/get_sections/$projectId"
+            return TestRailApiClient.api.getSections(url, suiteId, limit, offset).call().sections
         }
 
         val allSections = mutableSetOf<SectionDTO>()
@@ -19,9 +21,9 @@ object Sections {
 
         while (hasMoreCases) {
             val sections = getSections(projectId, suiteId, offset, limit)
-            allSections.addAll(sections.sections)
+            allSections.addAll(sections)
 
-            if (sections.sections.size < limit) {
+            if (sections.size < limit) {
                 hasMoreCases = false
             } else {
                 offset += limit

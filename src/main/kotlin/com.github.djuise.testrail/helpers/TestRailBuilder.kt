@@ -1,9 +1,6 @@
 package com.github.djuise.testrail.helpers
 
-import com.github.djuise.testrail.api.dto.CaseDTO
-import com.github.djuise.testrail.api.dto.ProjectDTO
-import com.github.djuise.testrail.api.dto.SectionDTO
-import com.github.djuise.testrail.api.dto.SuiteDTO
+import com.github.djuise.testrail.api.dto.*
 import com.github.djuise.testrail.api.helpers.ProjectId
 import com.github.djuise.testrail.api.helpers.SuiteId
 import com.github.djuise.testrail.api.helpers.TestRunFunctions
@@ -231,6 +228,37 @@ interface TestRailFunctionsForConfiguredProjectAndSuite: Functions, ConfiguredPr
 }
 
 interface Functions {
+
+    /**
+     * Retrieves a test run by its ID.
+     *
+     * @param runId The ID of the test run to retrieve.
+     * @return Returns a RunDTO.
+     */
+    fun getRun(runId: Int): RunDTO
+
+    /**
+     * Retrieves a case by its ID.
+     *
+     * @return Returns a CaseDTO
+     */
+    fun getCase(caseId: Int): CaseDTO
+
+    /**
+     * Retrieves all tests from a test run.
+     *
+     * @param runId The ID of the test run.
+     * @return Returns a List of TestDTO.
+     */
+    fun getTests(runId: Int): List<TestDTO>
+
+    /**
+     * Retrieves only the case IDs from a test run.
+     *
+     * @param runId The ID of the test run.
+     * @return Returns a List of case IDs.
+     */
+    fun getCaseIds(runId: Int): List<Int>
 
     /**
      * Retrieves a list of all projects from TestRail.

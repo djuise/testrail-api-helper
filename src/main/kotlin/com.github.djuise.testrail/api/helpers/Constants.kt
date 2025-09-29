@@ -2,5 +2,5 @@ package com.github.djuise.testrail.api.helpers
 
 object Constants {
 
-    const val API2 = "index.php?/api/v2"
+    const val API_V = "index.php?/api/v2"
 }

@@ -1,12 +1,12 @@
 package com.github.djuise.testrail.api.requests
 
-import com.github.djuise.testrail.api.TestRailRequest
+import com.github.djuise.testrail.api.TestRailApiClient
 import com.github.djuise.testrail.api.dto.ProjectDTO
-import com.github.djuise.testrail.api.dto.ProjectsDTO
+import com.github.djuise.testrail.api.helpers.call
 
 object Projects {
 
     fun get(): Set<ProjectDTO> {
-        return TestRailRequest.get("get_projects", ProjectsDTO::class.java).projects
+        return TestRailApiClient.api.getProjects().call().projects
     }
 }

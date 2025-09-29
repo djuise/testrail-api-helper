@@ -1,20 +1,17 @@
 package com.github.djuise.testrail.api.requests
 
-import com.github.djuise.testrail.api.TestRailRequest
+import com.github.djuise.testrail.api.TestRailApiClient
 import com.github.djuise.testrail.api.dto.CaseDTO
-import com.github.djuise.testrail.api.dto.CasesDTO
-import com.github.djuise.testrail.api.dto.UpdatedCasesDTO
-import com.github.djuise.testrail.api.helpers.Constants.API2
-import com.github.djuise.testrail.api.helpers.jsonMapper
-import com.github.djuise.testrail.api.helpers.mapToJson
-import com.github.djuise.testrail.api.helpers.objectMapper
+import com.github.djuise.testrail.api.helpers.Constants.API_V
+import com.github.djuise.testrail.api.helpers.call
 
 object Cases {
 
     fun getAll(projectId: Int, suiteId: Int): Set<CaseDTO> {
 
         fun getCases(projectId: Int, suiteId: Int, offset: Int, limit: Int): Set<CaseDTO> {
-            return TestRailRequest.get("get_cases/$projectId&suite_id=$suiteId&limit=$limit&offset=$offset", CasesDTO::class.java).cases
+            val url = "$API_V/get_cases/$projectId"
+            return TestRailApiClient.api.getCases(url, suiteId, limit, offset).call().cases
         }
 
         val allCases = mutableSetOf<CaseDTO>()
@@ -36,20 +33,26 @@ object Cases {
         return allCases
     }
 
+    fun getCase(id: Int): CaseDTO {
+        val url = "$API_V/get_case/$id"
+        return TestRailApiClient.api.getCase(url).call()
+//        val call = TestRailApiClient.api.getCase(url)
+    }
+
     fun update(case: CaseDTO): CaseDTO {
-        val body = jsonMapper.writeValueAsString(case)
-        return TestRailRequest.post("$API2/update_case/${case.id}", body, CaseDTO::class.java)
+        val url = "$API_V/update_case/${case.id}"
+        return TestRailApiClient.api.updateCase(url, case).call()
     }
 
     fun update(caseId: Int, fields: Map<String, Any?>): CaseDTO {
-        val body = objectMapper.mapToJson(fields)
-        return TestRailRequest.post("$API2/update_case/$caseId", body, CaseDTO::class.java)
+        val url = "$API_V/update_case/$caseId"
+        return TestRailApiClient.api.updateCaseFields(url, fields).call()
     }
 
     fun update(casesId: List<Int>, suiteId: Int, fields: Map<String, Any?>): Set<CaseDTO> {
         val caseIds = mutableMapOf("caseIds" to casesId)
         val map = fields + caseIds
-        val body = objectMapper.mapToJson(map)
-        return TestRailRequest.post("$API2/update_cases/$suiteId", body, UpdatedCasesDTO::class.java).updatedCases
+        val url = "$API_V/update_cases/$suiteId"
+        return TestRailApiClient.api.updateCases(url, map).call().updatedCases
     }
 }

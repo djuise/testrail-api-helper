@@ -2,6 +2,7 @@ package com.github.djuise.testrail.api.helpers
 
 import com.github.djuise.testrail.api.dto.CaseDTO
 import com.github.djuise.testrail.api.dto.CreateRunDTO
+import com.github.djuise.testrail.api.dto.RunDTO
 import com.github.djuise.testrail.api.requests.Run
 
 /**
@@ -59,7 +60,7 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
         return this
     }
 
-    override fun create(): Int {
+    override fun create(): RunDTO {
         val run = CreateRunDTO(name, description, suiteId, casesId)
 
         return Run.create(projectId, run)

@@ -1,6 +1,7 @@
 package com.github.djuise.testrail.api.helpers
 
 import com.github.djuise.testrail.api.dto.CaseDTO
+import com.github.djuise.testrail.api.dto.RunDTO
 
 interface ProjectId {
     /**
@@ -57,5 +58,5 @@ interface TestRunFunctions {
      * @return The ID of the newly created test run.
      * @throws TestRailException if the request to create the test run fails.
      */
-    fun create(): Int
+    fun create(): RunDTO
 }

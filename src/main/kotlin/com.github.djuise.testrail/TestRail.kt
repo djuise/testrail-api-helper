@@ -1,17 +1,11 @@
 package com.github.djuise.testrail
 
-import com.github.djuise.testrail.api.dto.CaseDTO
-import com.github.djuise.testrail.api.dto.ProjectDTO
-import com.github.djuise.testrail.api.dto.SectionDTO
-import com.github.djuise.testrail.api.dto.SuiteDTO
+import com.github.djuise.testrail.api.dto.*
 import com.github.djuise.testrail.api.helpers.ProjectId
 import com.github.djuise.testrail.api.helpers.SuiteId
 import com.github.djuise.testrail.api.helpers.TestRailRunBuilder
 import com.github.djuise.testrail.api.helpers.TestRunFunctions
-import com.github.djuise.testrail.api.requests.Cases
-import com.github.djuise.testrail.api.requests.Projects
-import com.github.djuise.testrail.api.requests.Sections
-import com.github.djuise.testrail.api.requests.Suites
+import com.github.djuise.testrail.api.requests.*
 import com.github.djuise.testrail.helpers.*
 import java.util.*
 
@@ -89,10 +83,22 @@ class TestRail private constructor(): TUsername,
         return this
     }
 
+    // Functions without Project ID and Suite ID
+
     override fun getProjects(): Set<ProjectDTO> =
         Projects.get()
 
-    // Functions without Project ID and Suite ID
+    override fun getCase(caseId: Int): CaseDTO =
+        Cases.getCase(caseId)
+
+    override fun getRun(runId: Int): RunDTO =
+        Run.get(runId)
+
+    override fun getTests(runId: Int): List<TestDTO> =
+        Tests.getAll(runId)
+
+    override fun getCaseIds(runId: Int): List<Int> =
+        Tests.getCaseIds(runId)
 
     override fun getSuites(projectId: Int): Set<SuiteDTO> =
         Suites.get(projectId)

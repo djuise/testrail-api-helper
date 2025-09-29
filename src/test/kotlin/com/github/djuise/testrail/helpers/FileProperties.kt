@@ -10,6 +10,6 @@ object FileProperties {
     val testRailUrl: String? = properties.getProperty("url")
     val username: String? = properties.getProperty("username")
     val apiToken: String? = properties.getProperty("apiToken")
-    val projectId: Int = properties.getProperty("projectId").toInt()
-    val suiteId: Int = properties.getProperty("suiteId").toInt()
+    val projectId: Int? = properties.getProperty("projectId").toIntOrNull()
+    val suiteId: Int? = properties.getProperty("suiteId").toIntOrNull()
 }
