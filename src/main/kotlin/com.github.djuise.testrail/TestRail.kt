@@ -94,6 +94,18 @@ class TestRail private constructor(): TUsername,
     override fun getRun(runId: Int): RunDTO =
         Run.get(runId)
 
+    override fun updateRun(runId: Int, run: RunDTO): RunDTO =
+        Run.update(runId, run)
+
+    override fun updateRun(run: RunDTO): RunDTO =
+        Run.update(run.id, run)
+
+    override fun closeRun(runId: Int): RunDTO =
+        Run.close(runId)
+
+    override fun deleteRun(runId: Int) =
+        Run.delete(runId)
+
     override fun getTests(runId: Int): List<TestDTO> =
         Tests.getAll(runId)
 
@@ -108,6 +120,9 @@ class TestRail private constructor(): TUsername,
 
     override fun getFirstFoundProjectIdByName(name: String): Int? =
         getProjects().firstOrNull { it.name.lowercase() == name.lowercase() }?.id
+
+    override fun getStatuses(): List<StatusDTO> =
+        Statuses.getAll()
 
     override fun getCases(projectId: Int, suiteId: Int): Set<CaseDTO> =
         Cases.getAll(projectId, suiteId)

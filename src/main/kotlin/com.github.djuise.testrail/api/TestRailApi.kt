@@ -64,6 +64,18 @@ interface TestRailApi {
         @Body run: CreateRunDTO
     ): Call<RunDTO>
 
+    @POST
+    fun updateRun(
+        @Url url: String,
+        @Body run: RunDTO
+    ): Call<RunDTO>
+
+    @POST
+    fun closeRun(@Url url: String): Call<RunDTO>
+
+    @POST
+    fun deleteRun(@Url url: String): Call<Unit>
+
     // Tests
     @GET
     fun getTests(
@@ -71,4 +83,8 @@ interface TestRailApi {
         @Query("limit") limit: Int = 250,
         @Query("offset") offset: Int = 0
     ): Call<TestsDTO>
+
+    // Statuses
+    @GET("${Constants.API_V}/get_statuses")
+    fun getStatuses(): Call<List<StatusDTO>>
 }

@@ -13,7 +13,7 @@ object TestRailApiClient {
             val original = chain.request()
             val withAuth = original.newBuilder()
                 .header("Authorization", "Basic ${TestRail.token}")
-                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
                 .build()
             chain.proceed(withAuth)
         }

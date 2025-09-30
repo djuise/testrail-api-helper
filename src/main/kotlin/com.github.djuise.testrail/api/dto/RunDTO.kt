@@ -11,28 +11,28 @@ data class CreateRunDTO(
     @JsonProperty("suite_id")
     val suiteId: Int?,
     @JsonProperty("case_ids")
-    val caseIds: Set<Int>? = emptySet()
+    val caseIds: Set<Int>? = null
 ) {
     @JsonProperty("include_all")
-    val includeAll: Boolean = caseIds?.isEmpty() ?: true
+    val includeAll: Boolean = caseIds == null
 }
 
 data class RunDTO(
     val id: Int,
-    val name: String,
-    val description: String?,
+    var name: String,
+    var description: String?,
     @JsonProperty("project_id")
     val projectId: Int,
     @JsonProperty("suite_id")
     val suiteId: Int,
     @JsonProperty("milestone_id")
-    val milestoneId: Int?,
+    var milestoneId: Int?,
     @JsonProperty("assignedto_id")
-    val assignedtoId: Int?,
+    var assignedtoId: Int?,
     @JsonProperty("include_all")
-    val includeAll: Boolean,
+    var includeAll: Boolean,
     @JsonProperty("is_completed")
-    val isCompleted: Boolean,
+    var isCompleted: Boolean,
     @JsonProperty("completed_on")
     @JsonDeserialize(using = UnixTimestampDeserializer::class)
     val completedOn: Date?,

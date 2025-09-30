@@ -16,7 +16,7 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
     private var projectId: Int = -1
     private var suiteId: Int? = null
     private var description: String? = null
-    private var casesId: MutableSet<Int> = mutableSetOf()
+    private var casesId: MutableSet<Int>? = null
 
     companion object {
         /**
@@ -49,13 +49,16 @@ class TestRailRunBuilder private constructor(private val name: String): ProjectI
     }
 
     override fun casesById(casesId: Set<Int>): TestRunFunctions {
-        this.casesId.addAll(casesId)
+        if (this.casesId == null)
+            this.casesId = mutableSetOf()
+
+        this.casesId!!.addAll(casesId)
 
         return this
     }
 
     override fun cases(casesList: Set<CaseDTO>): TestRunFunctions {
-        this.casesId.addAll(casesList.map { it.id })
+        this.casesById(casesList.map { it.id }.toSet())
 
         return this
     }

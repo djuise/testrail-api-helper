@@ -238,6 +238,38 @@ interface Functions {
     fun getRun(runId: Int): RunDTO
 
     /**
+     * Updates an existing test run.
+     *
+     * @param runId The ID of the test run to update.
+     * @param run The updated run data.
+     * @return Returns the updated RunDTO.
+     */
+    fun updateRun(runId: Int, run: RunDTO): RunDTO
+
+    /**
+     * Updates an existing test run.
+     *
+     * @param run The updated run data.
+     * @return Returns the updated RunDTO.
+     */
+    fun updateRun(run: RunDTO): RunDTO
+
+    /**
+     * Closes an existing test run.
+     *
+     * @param runId The ID of the test run to close.
+     * @return Returns the closed RunDTO.
+     */
+    fun closeRun(runId: Int): RunDTO
+
+    /**
+     * Deletes an existing test run.
+     *
+     * @param runId The ID of the test run to delete.
+     */
+    fun deleteRun(runId: Int)
+
+    /**
      * Retrieves a case by its ID.
      *
      * @return Returns a CaseDTO
@@ -301,6 +333,13 @@ interface Functions {
      * @return Returns the ID of the first found project or null if no match is found.
      */
     fun getFirstFoundProjectIdByName(name: String): Int?
+
+    /**
+     * Retrieves all statuses from TestRail.
+     *
+     * @return Returns a List of StatusDTO.
+     */
+    fun getStatuses(): List<StatusDTO>
 }
 
 interface ConfiguredProjectFunctions {

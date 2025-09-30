@@ -46,6 +46,7 @@ interface TestRunFunctions {
     /**
      * Sets the case IDs for the test run based on a list of `CaseDTO`.
      * Optional function. If it will be skipped then all testcases from the suite will be added.
+     * If needs an empty run put emptySet()
      *
      * @param casesList The list of `CaseDTO` from which to extract the IDs.
      * @return Returns this `Run` instance to allow method chaining.
