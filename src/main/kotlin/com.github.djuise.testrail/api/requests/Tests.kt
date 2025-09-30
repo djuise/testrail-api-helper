@@ -31,11 +31,4 @@ object Tests {
 
         return allTests
     }
-
-    /**
-     * Get only the case IDs from a run
-     */
-    fun getCaseIds(runId: Int): List<Int> {
-        return getAll(runId).map { it.caseId }
-    }
 }

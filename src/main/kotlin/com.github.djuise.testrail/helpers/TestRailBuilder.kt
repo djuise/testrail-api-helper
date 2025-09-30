@@ -285,14 +285,6 @@ interface Functions {
     fun getTests(runId: Int): List<TestDTO>
 
     /**
-     * Retrieves only the case IDs from a test run.
-     *
-     * @param runId The ID of the test run.
-     * @return Returns a List of case IDs.
-     */
-    fun getCaseIds(runId: Int): List<Int>
-
-    /**
      * Retrieves a list of all projects from TestRail.
      *
      * @return Returns a Set<ProjectDTO>

@@ -109,9 +109,6 @@ class TestRail private constructor(): TUsername,
     override fun getTests(runId: Int): List<TestDTO> =
         Tests.getAll(runId)
 
-    override fun getCaseIds(runId: Int): List<Int> =
-        Tests.getCaseIds(runId)
-
     override fun getSuites(projectId: Int): Set<SuiteDTO> =
         Suites.get(projectId)
 
