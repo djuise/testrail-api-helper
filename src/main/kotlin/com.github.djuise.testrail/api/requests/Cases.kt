@@ -36,7 +36,6 @@ object Cases {
     fun getCase(id: Int): CaseDTO {
         val url = "$API_V/get_case/$id"
         return TestRailApiClient.api.getCase(url).call()
-//        val call = TestRailApiClient.api.getCase(url)
     }
 
     fun update(case: CaseDTO): CaseDTO {
@@ -50,7 +49,7 @@ object Cases {
     }
 
     fun update(casesId: List<Int>, suiteId: Int, fields: Map<String, Any?>): Set<CaseDTO> {
-        val caseIds = mutableMapOf("caseIds" to casesId)
+        val caseIds = mutableMapOf("case_ids" to casesId)
         val map = fields + caseIds
         val url = "$API_V/update_cases/$suiteId"
         return TestRailApiClient.api.updateCases(url, map).call().updatedCases
