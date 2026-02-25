@@ -32,13 +32,13 @@ interface TestRailApi {
     @POST
     fun updateCaseFields(
         @Url url: String,
-        @Body fields: Map<String, Any?>
+        @Body fields: Map<String, @JvmSuppressWildcards Any?>
     ): Call<CaseDTO>
 
     @POST
     fun updateCases(
         @Url url: String,
-        @Body data: Map<String, Any?>
+        @Body data: Map<String, @JvmSuppressWildcards Any?>
     ): Call<UpdatedCasesDTO>
 
     // Sections
